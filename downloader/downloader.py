@@ -1,7 +1,11 @@
 #-*-coding: utf-8 -*-
 
-import requests
 import json
+
+import requests
+from models import Qingsongyike, Base
+from db_function import DBSession, engine
+
 
 def get_article_list(url, key, timeout=20):
     r = requests.get(url, timeout=timeout)
@@ -22,12 +26,45 @@ def get_qingsongyike_list(url, key):
     qingsongyike_list = get_article_list(url, key)
     return qingsongyike_list
 
+def get_qingsongyike_body(docid, timeout=20):
+    url = "http://c.3g.163.com/nc/article/%s/full.html" % str(docid)
+    r = requests.get(url, timeout=timeout)
+    if r.status_code != 200:
+        print('Unable to load url %s, status code: %s' % (url, r.status_code))
+        return None
+    data = r.json()
+    if data:
+        data = data[docid]
+        imgs = data['img']
+        body = data['body']
+        for img in imgs:
+            body = body.replace(img['ref'], "<img src=\"" + img['src'] + "\"/><hr>")
+        body = body.replace('%', '%%')
+    return body
+
+def save_qingsongyike_to_db(qingsongyike):
+    new = Qingsongyike()
+    new.ptime = qingsongyike['ptime']
+    new.docid = qingsongyike['docid']
+    new.title = qingsongyike['title']
+    new.body = get_qingsongyike_body(qingsongyike['docid'])
+    Base.metadata.create_all(engine)
+    session = DBSession()
+    session.add(new)
+    session.commit()
+    session.close()
+
+
+
 def test():
     url = "http://c.m.163.com/nc/article/list/T1350383429665/0-1.html"
     key = "T1350383429665"
     qingsongyike_list = get_qingsongyike_list(url, key)
     for qingsongyike in qingsongyike_list:
-        print(qingsongyike)
+        save_qingsongyike_to_db(qingsongyike)
+    session = DBSession()
+    session.query()
+    session.close()
 
 if __name__ == '__main__':
     test()
