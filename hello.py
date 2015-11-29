@@ -1,12 +1,26 @@
 from flask import Flask, render_template
 from flask_script import Manager
 from flask_bootstrap import Bootstrap
-from downloader.db_function import DBSession
-from downloader.models import Qingsongyike
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 manager = Manager(app)
 bootstrap = Bootstrap(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://test:hello@192.168.111.163/data"
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+db = SQLAlchemy(app)
+
+class Qingsongyike(db.Model):
+    __tablename__ = 'qingsongyike'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    title = db.Column(db.String(32))
+    docid = db.Column(db.String(32), unique=True)
+    ptime = db.Column(db.String(32))
+    body = db.Column(db.Text)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -22,9 +36,7 @@ def index():
 
 @app.route('/qsyk')
 def qsyk():
-    session = DBSession()
-    qingsongyike = session.query(Qingsongyike).first()
-    session.close()
+    qingsongyike=Qingsongyike.query[-1]
     title=qingsongyike.title
     body=qingsongyike.body
     return render_template('qsyk.html',title=title, body=body)

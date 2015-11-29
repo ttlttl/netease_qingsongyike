@@ -1,11 +1,11 @@
 #-*-coding: utf-8 -*-
+import sys
+sys.path.extend(['..'])
 
 import json
 
 import requests
-from models import Qingsongyike, Base
-from db_function import DBSession, engine
-
+from hello import Qingsongyike, db
 
 def get_article_list(url, key, timeout=20):
     r = requests.get(url, timeout=timeout)
@@ -48,12 +48,9 @@ def save_qingsongyike_to_db(qingsongyike):
     new.docid = qingsongyike['docid']
     new.title = qingsongyike['title']
     new.body = get_qingsongyike_body(qingsongyike['docid'])
-    Base.metadata.create_all(engine)
-    session = DBSession()
-    session.add(new)
-    session.commit()
-    session.close()
 
+    db.session.add(new)
+    db.session.commit()
 
 
 def test():
@@ -62,9 +59,8 @@ def test():
     qingsongyike_list = get_qingsongyike_list(url, key)
     for qingsongyike in qingsongyike_list:
         save_qingsongyike_to_db(qingsongyike)
-    session = DBSession()
-    session.query()
-    session.close()
+    db.session.query()
+    db.session.close()
 
 if __name__ == '__main__':
     test()
