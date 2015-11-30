@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_script import Manager, Shell
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 manager = Manager(app)
@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class Qingsongyike(db.Model):
     __tablename__ = 'qingsongyike'
@@ -26,7 +27,9 @@ class Qingsongyike(db.Model):
 
 def make_shell_context():
     return dict(app=app, db=db, Qingsongyike=Qingsongyike)
+
 manager.add_command('shell', Shell(make_context=make_shell_context))
+manager.add_command('db', MigrateCommand)
 
 @app.errorhandler(404)
 def page_not_found(e):
