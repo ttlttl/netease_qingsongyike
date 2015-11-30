@@ -1,11 +1,12 @@
-#-*-coding: utf-8 -*-
+import json
 import sys
 sys.path.extend(['..'])
-
-import json
 import requests
-from hello import Qingsongyike, db
+from flask_sqlalchemy import SQLAlchemy
+from manage import app
+from app.models import Qingsongyike
 
+db = SQLAlchemy(app)
 def get_article_list(url, key, timeout=20):
     r = requests.get(url, timeout=timeout)
     if r.status_code != 200:
