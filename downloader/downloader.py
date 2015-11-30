@@ -3,7 +3,6 @@ import sys
 sys.path.extend(['..'])
 
 import json
-
 import requests
 from hello import Qingsongyike, db
 
@@ -23,7 +22,8 @@ def get_article_list(url, key, timeout=20):
 
 def get_qingsongyike_list(url, key):
     print('Processing url %s' % url)
-    qingsongyike_list = get_article_list(url, key)
+    article_list = get_article_list(url, key)
+    qingsongyike_list = [a for a in article_list if "每日轻松一刻" in a['title']]
     return qingsongyike_list
 
 def get_qingsongyike_body(docid, timeout=20):

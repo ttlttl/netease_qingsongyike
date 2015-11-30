@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from flask_script import Manager
+from flask_script import Manager, Shell
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,6 +21,10 @@ class Qingsongyike(db.Model):
     docid = db.Column(db.String(32), unique=True)
     ptime = db.Column(db.String(32))
     body = db.Column(db.Text)
+
+def make_shell_context():
+    return dict(app=app, db=db, Qingsongyike=Qingsongyike)
+manager.add_command('shell', Shell(make_context=make_shell_context))
 
 @app.errorhandler(404)
 def page_not_found(e):
