@@ -47,6 +47,8 @@ def save_qingsongyike_to_db(qingsongyike):
     new.ptime = qingsongyike['ptime']
     new.docid = qingsongyike['docid']
     new.title = qingsongyike['title']
+    new.cover_img = qingsongyike['imgsrc']
+    new.url_3g = qingsongyike['url']
     new.body = get_qingsongyike_body(qingsongyike['docid'])
 
     db.session.add(new)
