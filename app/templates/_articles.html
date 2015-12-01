@@ -1,0 +1,9 @@
+{% for article in articles %}
+<div class="page-header">
+        <h2>{{article.title}}</h2>
+        <h3>{{article.ptime}}</h3>
+</div>
+<div class="page-content">
+    {{ article.body|safe }}</div>
+</div>
+{% endfor %}

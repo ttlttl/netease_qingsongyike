@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% import "_macros.html" as macros %}
+
+{% block title %}TTLx2 - 轻松一刻{% endblock %}
+
+{% block content %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.qingsong') }}
+</div>
+{% endif %}
+
+{% include '_articles.html' %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.qingsong') }}
+</div>
+{% endif %}
+
+{% endblock %}

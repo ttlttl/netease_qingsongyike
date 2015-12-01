@@ -11,11 +11,10 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:hello@192.168.111.163/data"
 
 class TestingConfig(Config):
-    DEBUG = True
+    TESTING = True
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:hello@192.168.111.163/test"
 
 class ProductionConfig(Config):
-    DEBUG = False
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:hello@192.168.111.163/server"
 
 config = {
