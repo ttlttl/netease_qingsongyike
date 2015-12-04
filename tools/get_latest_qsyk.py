@@ -56,7 +56,7 @@ def save_qingsongyike_to_db(qingsongyike):
     db.session.commit()
 
 
-def test():
+def get_latest_qingsongyike():
     url = "http://c.m.163.com/nc/article/list/T1350383429665/0-1.html"
     key = "T1350383429665"
     qingsongyike_list = get_qingsongyike_list(url, key)
@@ -66,4 +66,4 @@ def test():
     db.session.close()
 
 if __name__ == '__main__':
-    test()
+    get_latest_qingsongyike()
