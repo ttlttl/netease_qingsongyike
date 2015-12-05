@@ -39,7 +39,7 @@ def get_qingsongyike_body(docid, timeout=20):
         imgs = data['img']
         body = data['body']
         for img in imgs:
-            body = body.replace(img['ref'], "<img src=\"" + img['src'] + "\"/><hr>")
+            body = body.replace(img['ref'], "<img class=\"img-responsive\" src=\"" + img['src'] + "\"/><hr>")
         body = body.replace('%', '%%')
     return body
 
