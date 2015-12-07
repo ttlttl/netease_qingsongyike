@@ -5,19 +5,21 @@
 {% block title %}TTLx2 - 轻松一刻{% endblock %}
 
 {% block content %}
-
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.qingsong') }}
+<div class="container">
+    {% if pagination %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, '.qingsong') }}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            {% include '_articles.html' %}
+        </div>
+    </div>
+    {% if pagination %}
+            <div class="pagination">
+                    {{ macros.pagination_widget(pagination, '.qingsong') }}
+            </div>
+    {% endif %}
 </div>
-{% endif %}
-
-{% include '_articles.html' %}
-
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.qingsong') }}
-</div>
-{% endif %}
-
 {% endblock %}
