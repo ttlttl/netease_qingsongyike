@@ -3,7 +3,38 @@
 {% block title %}TTLx2 - 主页{% endblock %}
 
 {% block content %}
-<div class="page-header">
-        <h1><a href="/qingsong">去轻松一刻看看？</a></h1>
+<div class="container">
+        {% if weather['status']=='ok' %}
+        <h1>天气预报：</h1>
+        <h3>城市：{{ weather['basic']['city'] }}</h3>
+        <h3>更新时间：{{ weather['basic']['update']['loc'] }}</h3>
+        <h4>体感：{{ weather['suggestion']['comf']['brf'] }} - {{ weather['suggestion']['comf']['txt'] }}</h4>
+        <h4>紫外线：{{ weather['suggestion']['uv']['brf'] }} - {{ weather['suggestion']['uv']['txt'] }}</h4>
+        <h4>运动：{{ weather['suggestion']['sport']['brf'] }} - {{ weather['suggestion']['sport']['txt'] }}</h4>
+        <h4>感冒：{{ weather['suggestion']['flu']['brf'] }} - {{ weather['suggestion']['flu']['txt'] }}</h4>
+        <h4>穿衣：{{ weather['suggestion']['drsg']['brf'] }} - {{ weather['suggestion']['drsg']['txt'] }}</h4>
+        <h3>最近7天：</h3>
+        <table class="table">
+                <thead>
+                <tr>
+                        <th>日期</th>
+                        <th>天气</th>
+                        <th>温度</th>
+                        <th>风</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for day in weather['daily_forecast'] %}
+                        <tr>
+                                <td>{{ day['date'] }}</td>
+                                <td>{{ day['cond']['txt_d'] }}-{{ day['cond']['txt_n'] }}</td>
+                                <td>{{ day['tmp']['min'] }}-{{ day['tmp']['max'] }}</td>
+                                <td>{{ day['wind']['dir'] }}:{{ day['wind']['sc'] }}</td>
+                        </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+        {% endif %}
+        <h2><a href="/qingsong">去轻松一刻看看？</a></h2>
 </div>
 {% endblock %}
