@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_bootstrap import WebCDN
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from config import config
@@ -12,6 +13,12 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     bootstrap.init_app(app)
+    app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
+        '//cdn.bootcss.com/jquery/1.11.3/jquery.min.js'
+    )
+    app.extensions['bootstrap']['cdns']['bootstrap'] = WebCDN(
+        '//cdn.bootcss.com/bootstrap/3.3.5/'
+    )
     db.init_app(app)
 
     from .main import main as main_blueprint
